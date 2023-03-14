@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"sort"
+	"sync"
 	"time"
 
 	"github.com/deepch/vdk/av"
@@ -17,7 +18,8 @@ type JCodec struct {
 	Type string
 }
 
-func serveHTTP() {
+func serveHTTP(wg *sync.WaitGroup) {
+	defer wg.Done()
 	router := gin.Default()
 	router.LoadHTMLGlob("web/templates/*")
 	router.GET("/", HTTPAPIServerIndex)

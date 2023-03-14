@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"log"
+	"sync"
 	"time"
 
 	"github.com/deepch/vdk/format/rtspv2"
@@ -14,14 +15,14 @@ var (
 	ErrorStreamExitNoViewer        = errors.New("Stream Exit On Demand No Viewer")
 )
 
-func serveStreams() {
+func serveStreams(wg *sync.WaitGroup) {
+	defer wg.Done()
 	for k, v := range Config.Streams {
 		if !v.OnDemand {
 			go RTSPWorkerLoop(k, v.URL, v.OnDemand)
 		}
 	}
 }
-
 func RTSPWorkerLoop(name, url string, OnDemand bool) {
 	defer Config.RunUnlock(name)
 	for {

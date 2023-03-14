@@ -15,7 +15,7 @@ let log = msg => {
   document.getElementById('div').innerHTML += msg + '<br>'
 }
 
-pc.ontrack = function (event) {
+pc.ontrack = function(event) {
   stream.addTrack(event.track);
   videoElem.srcObject = stream;
   log(event.streams.length + ' track is delivered')
@@ -29,20 +29,20 @@ async function handleNegotiationNeededEvent() {
   getRemoteSdp();
 }
 
-$(document).ready(function () {
+$(document).ready(function() {
   $('#' + suuid).addClass('active');
   getCodecInfo();
 });
 
 
 function getCodecInfo() {
-  $.get("../codec/" + suuid, function (data) {
+  $.get("../codec/" + suuid, function(data) {
     try {
       data = JSON.parse(data);
     } catch (e) {
       console.log(e);
     } finally {
-      $.each(data, function (index, value) {
+      $.each(data,function(index,value){
         pc.addTransceiver(value.Type, {
           'direction': 'sendrecv'
         })
@@ -65,14 +65,10 @@ function getCodecInfo() {
 let sendChannel = null;
 
 function getRemoteSdp() {
-  if (!pc.localDescription) {
-    console.warn('Local description not set yet');
-    return;
-  }
-  $.post("../receiver/" + suuid, {
+  $.post("../receiver/"+ suuid, {
     suuid: suuid,
     data: btoa(pc.localDescription.sdp)
-  }, function (data) {
+  }, function(data) {
     try {
       pc.setRemoteDescription(new RTCSessionDescription({
         type: 'answer',
@@ -82,9 +78,4 @@ function getRemoteSdp() {
       console.warn(e);
     }
   });
-}
-
-
-function startSession() {
-  getRemoteSdp();
 }
