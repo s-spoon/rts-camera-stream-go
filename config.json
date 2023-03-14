@@ -6,7 +6,7 @@
   "streams": {
     "MainCam": {
       "on_demand": true,
-      "url": "rtsp://service:WSS4Bosch!@119.82.252.166:554/main-stream"
+      "url": "rtsp://service:WSS4Bosch!@47.254.196.190/:554/main-stream"
     }
   }
 }
