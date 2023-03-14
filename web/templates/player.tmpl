@@ -8,18 +8,18 @@
 <script src="../../static/js/bootstrap.min.js"></script>
 <script src="../../static/js/adapter-latest.js"></script>
 
-<!-- <h2 align=center>
+<h2 align=center>
     Play Stream {{ .suuid }}
-</h2> -->
-    <!-- {{ range .suuidMap }}
+</h2>
+    {{ range .suuidMap }}
     <a href="{{ . }}" id="{{ . }}" name="{{ . }}" class="list-group-item list-group-item-action">{{ . }}</a>
-  {{ end }} -->
+  {{ end }}
     <input type="hidden" name="suuid" id="suuid" value="{{ .suuid }}">
     <input type="hidden" name="port" id="port" value="{{ .port }}">
     <input type="hidden" id="localSessionDescription" readonly="true">
     <input type="hidden" id="remoteSessionDescription">
     <video style="width:600px; height:300px" id="videoElem" autoplay muted controls></video>
-    <!-- <button onclick="startSession()"> Start Session </button> -->
+    <button onclick="startSession()"> Start Session </button>
     <div id="div"></div>
 <script type="text/javascript" src="../../static/js/app.js?ver={{ .version }}"></script>
 
