@@ -8,16 +8,16 @@
 <script src="../../static/js/bootstrap.min.js"></script>
 <script src="../../static/js/adapter-latest.js"></script>
 
-<h2 align=center>
+<!-- <h2 align=center>
     Play Stream {{ .suuid }}
-</h2>
+</h2> -->
 <div class="container">
   <div class="row">
     <div class="col-3">
       <div class="list-group">
-  {{ range .suuidMap }}
+  <!-- {{ range .suuidMap }}
     <a href="{{ . }}" id="{{ . }}" name="{{ . }}" class="list-group-item list-group-item-action">{{ . }}</a>
-  {{ end }}
+  {{ end }} -->
 </div>
     </div>
         <div class="col">
@@ -28,7 +28,7 @@
             <div id="remoteVideos">
                 <video style="width:600px" id="videoElem" autoplay muted controls></video>
             </div>
-            <button onclick="startSession()"> Start Session </button>
+            <!-- <button onclick="startSession()"> Start Session </button> -->
             <div id="div"></div>
         </div>
     </div>
