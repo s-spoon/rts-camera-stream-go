@@ -5,8 +5,8 @@
   },
   "streams": {
     "MainCam": {
-      "on_demand": true,
-      "url": "rtsp://wowzaec2demo.streamlock.net/vod/mp4:VOD-sample-clip.mp4"
+      "on_demand": false,
+      "url": "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4"
     }
   }
 }
