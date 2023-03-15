@@ -15,18 +15,18 @@ import (
 	"github.com/deepch/vdk/av"
 )
 
-//Config global
+// Config global
 var Config = loadConfig()
 
-//ConfigST struct
+// ConfigST struct
 type ConfigST struct {
-	mutex   sync.RWMutex
-	Server  ServerST            `json:"server"`
-	Streams map[string]StreamST `json:"streams"`
+	mutex     sync.RWMutex
+	Server    ServerST            `json:"server"`
+	Streams   map[string]StreamST `json:"streams"`
 	LastError error
 }
 
-//ServerST struct
+// ServerST struct
 type ServerST struct {
 	HTTPPort      string   `json:"http_port"`
 	ICEServers    []string `json:"ice_servers"`
@@ -36,7 +36,7 @@ type ServerST struct {
 	WebRTCPortMax uint16   `json:"webrtc_port_max"`
 }
 
-//StreamST struct
+// StreamST struct
 type StreamST struct {
 	URL          string `json:"url"`
 	Status       bool   `json:"status"`
@@ -127,7 +127,7 @@ func loadConfig() *ConfigST {
 			tmp.Streams[i] = v
 		}
 	} else {
-		addr := flag.String("listen", "8083", "HTTP host:port")
+		addr := flag.String("listen", "8888", "HTTP host:port")
 		udpMin := flag.Int("udp_min", 0, "WebRTC UDP port min")
 		udpMax := flag.Int("udp_max", 0, "WebRTC UDP port max")
 		iceServer := flag.String("ice_server", "", "ICE Server")

@@ -6,7 +6,7 @@ COPY .  .
 RUN go get -d -v ./...
 RUN go install -v ./...
 
-EXPOSE 8083
+EXPOSE 8888
 
 ENV GO111MODULE=on
 ENV GIN_MODE=release
