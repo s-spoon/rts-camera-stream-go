@@ -2350,42 +2350,28 @@ function shimLocalStreamsAPI(window) {
 }
 
 function shimRemoteStreamsAPI(window) {
-  if (typeof window.RTCPeerConnection !== 'function') {
-    return console.error('Constructor "window.RTCPeerConnection" is not existed');
+  if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) !== 'object' || !window.RTCPeerConnection) {
+    return;
   }
-  
   if (!('getRemoteStreams' in window.RTCPeerConnection.prototype)) {
     window.RTCPeerConnection.prototype.getRemoteStreams = function getRemoteStreams() {
-      if(!this._remoteStreams){
-        this._remoteStreams = [];
-      }
-      return this._remoteStreams;
+      return this._remoteStreams ? this._remoteStreams : [];
     };
   }
-  
   if (!('onaddstream' in window.RTCPeerConnection.prototype)) {
     Object.defineProperty(window.RTCPeerConnection.prototype, 'onaddstream', {
-      /**
-       * Getter; gets the value of the property
-       */
       get: function get() {
         return this._onaddstream;
       },
-      
-      /**
-       * Setter; sets the property to a value
-       * @param f {Function} callback function
-       */
       set: function set(f) {
         var _this3 = this;
-        
-        // remove existing add stream and track listeners
-        this.removeEventListener('addstream', this._onaddstream);
-        this.removeEventListener('track', this._onaddstreamtrack);
-        
-        // Add a new listener for add stream and track events
+
+        if (this._onaddstream) {
+          this.removeEventListener('addstream', this._onaddstream);
+          this.removeEventListener('track', this._onaddstreampoly);
+        }
         this.addEventListener('addstream', this._onaddstream = f);
-        this.addEventListener('track', this._onaddstreamtrack = function (e) {
+        this.addEventListener('track', this._onaddstreampoly = function (e) {
           e.streams.forEach(function (stream) {
             if (!_this3._remoteStreams) {
               _this3._remoteStreams = [];
@@ -2399,26 +2385,13 @@ function shimRemoteStreamsAPI(window) {
             _this3.dispatchEvent(event);
           });
         });
-      },
-      
-      /**
-       * Removes the add stream and tack listeners from the RTCPeerConnection
-       */
-      delete: function deleteSelf(){
-        this.removeEventListener('addstream', this._onaddstream);
-        this.removeEventListener('track', this._onaddstreamtrack);
-        delete this._onaddstream;
-        delete this._onaddstreamtrack;
       }
     });
-    
-    //Store the original setRemoteDescription function and override it with a new one
     var origSetRemoteDescription = window.RTCPeerConnection.prototype.setRemoteDescription;
     window.RTCPeerConnection.prototype.setRemoteDescription = function setRemoteDescription() {
       var pc = this;
-      
-      if (!this._onaddstreamtrack) {
-        this.addEventListener('track', this._onaddstreamtrack = function (e) {
+      if (!this._onaddstreampoly) {
+        this.addEventListener('track', this._onaddstreampoly = function (e) {
           e.streams.forEach(function (stream) {
             if (!pc._remoteStreams) {
               pc._remoteStreams = [];
@@ -2433,12 +2406,10 @@ function shimRemoteStreamsAPI(window) {
           });
         });
       }
-      
       return origSetRemoteDescription.apply(pc, arguments);
     };
   }
 }
-
 
 function shimCallbacksAPI(window) {
   if ((typeof window === 'undefined' ? 'undefined' : _typeof(window)) !== 'object' || !window.RTCPeerConnection) {

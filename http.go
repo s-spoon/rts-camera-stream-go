@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"sort"
-	"sync"
 	"time"
 
 	"github.com/deepch/vdk/av"
@@ -18,8 +17,7 @@ type JCodec struct {
 	Type string
 }
 
-func serveHTTP(wg *sync.WaitGroup) {
-	defer wg.Done()
+func serveHTTP() {
 	router := gin.Default()
 	router.LoadHTMLGlob("web/templates/*")
 	router.GET("/", HTTPAPIServerIndex)
@@ -34,7 +32,7 @@ func serveHTTP(wg *sync.WaitGroup) {
 	}
 }
 
-// HTTPAPIServerIndex  index
+//HTTPAPIServerIndex  index
 func HTTPAPIServerIndex(c *gin.Context) {
 	_, all := Config.list()
 	if len(all) > 0 {
@@ -48,7 +46,7 @@ func HTTPAPIServerIndex(c *gin.Context) {
 	}
 }
 
-// HTTPAPIServerStreamPlayer stream player
+//HTTPAPIServerStreamPlayer stream player
 func HTTPAPIServerStreamPlayer(c *gin.Context) {
 	_, all := Config.list()
 	sort.Strings(all)
@@ -60,7 +58,7 @@ func HTTPAPIServerStreamPlayer(c *gin.Context) {
 	})
 }
 
-// HTTPAPIServerStreamCodec stream codec
+//HTTPAPIServerStreamCodec stream codec
 func HTTPAPIServerStreamCodec(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	if Config.ext(c.Param("uuid")) {
@@ -92,7 +90,7 @@ func HTTPAPIServerStreamCodec(c *gin.Context) {
 	}
 }
 
-// HTTPAPIServerStreamWebRTC stream video over WebRTC
+//HTTPAPIServerStreamWebRTC stream video over WebRTC
 func HTTPAPIServerStreamWebRTC(c *gin.Context) {
 	if !Config.ext(c.PostForm("suuid")) {
 		log.Println("Stream Not Found")
@@ -124,7 +122,7 @@ func HTTPAPIServerStreamWebRTC(c *gin.Context) {
 		defer Config.clDe(c.PostForm("suuid"), cid)
 		defer muxerWebRTC.Close()
 		var videoStart bool
-		noVideo := time.NewTimer(30 * time.Second)
+		noVideo := time.NewTimer(10 * time.Second)
 		for {
 			select {
 			case <-noVideo.C:
@@ -132,7 +130,7 @@ func HTTPAPIServerStreamWebRTC(c *gin.Context) {
 				return
 			case pck := <-ch:
 				if pck.IsKeyFrame || AudioOnly {
-					noVideo.Reset(30 * time.Second)
+					noVideo.Reset(10 * time.Second)
 					videoStart = true
 				}
 				if !videoStart && !AudioOnly {

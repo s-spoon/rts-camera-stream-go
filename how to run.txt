@@ -1,3 +1,0 @@
-1.Download go installer and install.
-	https://go.dev/doc/install
-2.run "go run ." in terminal.
