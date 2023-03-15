@@ -17,17 +17,18 @@ var (
 func serveStreams() {
 	for k, v := range Config.Streams {
 		if !v.OnDemand {
-			go RTSPWorkerLoop(k, v.URL, v.OnDemand)
+			go RTSPWorkerLoop(k, v.URL, v.OnDemand, v.DisableAudio, v.Debug)
 		}
 	}
 }
-func RTSPWorkerLoop(name, url string, OnDemand bool) {
+func RTSPWorkerLoop(name, url string, OnDemand, DisableAudio, Debug bool) {
 	defer Config.RunUnlock(name)
 	for {
 		log.Println("Stream Try Connect", name)
-		err := RTSPWorker(name, url, OnDemand)
+		err := RTSPWorker(name, url, OnDemand, DisableAudio, Debug)
 		if err != nil {
 			log.Println(err)
+			Config.LastError = err
 		}
 		if OnDemand && !Config.HasViewer(name) {
 			log.Println(ErrorStreamExitNoViewer)
@@ -36,10 +37,11 @@ func RTSPWorkerLoop(name, url string, OnDemand bool) {
 		time.Sleep(1 * time.Second)
 	}
 }
-func RTSPWorker(name, url string, OnDemand bool) error {
+func RTSPWorker(name, url string, OnDemand, DisableAudio, Debug bool) error {
 	keyTest := time.NewTimer(20 * time.Second)
 	clientTest := time.NewTimer(20 * time.Second)
-	RTSPClient, err := rtspv2.Dial(rtspv2.RTSPClientOptions{URL: url, DisableAudio: false, DialTimeout: 3 * time.Second, ReadWriteTimeout: 3 * time.Second, Debug: false})
+	//add next TimeOut
+	RTSPClient, err := rtspv2.Dial(rtspv2.RTSPClientOptions{URL: url, DisableAudio: DisableAudio, DialTimeout: 3 * time.Second, ReadWriteTimeout: 3 * time.Second, Debug: Debug})
 	if err != nil {
 		return err
 	}
@@ -54,8 +56,12 @@ func RTSPWorker(name, url string, OnDemand bool) error {
 	for {
 		select {
 		case <-clientTest.C:
-			if OnDemand && !Config.HasViewer(name) {
-				return ErrorStreamExitNoViewer
+			if OnDemand {
+				if !Config.HasViewer(name) {
+					return ErrorStreamExitNoViewer
+				} else {
+					clientTest.Reset(20 * time.Second)
+				}
 			}
 		case <-keyTest.C:
 			return ErrorStreamExitNoVideoOnStream

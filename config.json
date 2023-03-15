@@ -1,11 +1,12 @@
 {
   "server": {
-    "http_port": ":8888",
+    "http_port": ":8083",
     "ice_servers": ["stun:stun.l.google.com:19302"]
   },
   "streams": {
-    "MainCam": {
+    "H264_AAC": {
       "on_demand": false,
+      "disable_audio": true,
       "url": "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4"
     }
   }

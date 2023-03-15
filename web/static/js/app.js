@@ -1,5 +1,4 @@
 let stream = new MediaStream();
-
 let suuid = $('#suuid').val();
 
 let config = {
@@ -47,17 +46,6 @@ function getCodecInfo() {
           'direction': 'sendrecv'
         })
       })
-      //send ping becouse PION not handle RTCSessionDescription.close()
-      sendChannel = pc.createDataChannel('foo');
-      sendChannel.onclose = () => console.log('sendChannel has closed');
-      sendChannel.onopen = () => {
-        console.log('sendChannel has opened');
-        sendChannel.send('ping');
-        setInterval(() => {
-          sendChannel.send('ping');
-        }, 1000)
-      }
-      sendChannel.onmessage = e => log(`Message from DataChannel '${sendChannel.label}' payload '${e.data}'`);
     }
   });
 }
