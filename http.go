@@ -40,7 +40,7 @@ func serveHTTP() {
 	}
 }
 
-//HTTPAPIServerIndex  index
+// HTTPAPIServerIndex  index
 func HTTPAPIServerIndex(c *gin.Context) {
 	_, all := Config.list()
 	if len(all) > 0 {
@@ -55,7 +55,7 @@ func HTTPAPIServerIndex(c *gin.Context) {
 	}
 }
 
-//HTTPAPIServerStreamPlayer stream player
+// HTTPAPIServerStreamPlayer stream player
 func HTTPAPIServerStreamPlayer(c *gin.Context) {
 	_, all := Config.list()
 	sort.Strings(all)
@@ -67,7 +67,7 @@ func HTTPAPIServerStreamPlayer(c *gin.Context) {
 	})
 }
 
-//HTTPAPIServerStreamCodec stream codec
+// HTTPAPIServerStreamCodec stream codec
 func HTTPAPIServerStreamCodec(c *gin.Context) {
 	if Config.ext(c.Param("uuid")) {
 		Config.RunIFNotRun(c.Param("uuid"))
@@ -81,11 +81,11 @@ func HTTPAPIServerStreamCodec(c *gin.Context) {
 				log.Println("Codec Not Supported WebRTC ignore this track", codec.Type())
 				continue
 			}
-			if codec.Type().IsVideo() {
-				tmpCodec = append(tmpCodec, JCodec{Type: "video"})
-			} else {
-				tmpCodec = append(tmpCodec, JCodec{Type: "audio"})
-			}
+			// if codec.Type().IsVideo() {
+			tmpCodec = append(tmpCodec, JCodec{Type: "video"})
+			// } else {
+			// 	tmpCodec = append(tmpCodec, JCodec{Type: "audio"})
+			// }
 		}
 		b, err := json.Marshal(tmpCodec)
 		if err == nil {
@@ -98,7 +98,7 @@ func HTTPAPIServerStreamCodec(c *gin.Context) {
 	}
 }
 
-//HTTPAPIServerStreamWebRTC stream video over WebRTC
+// HTTPAPIServerStreamWebRTC stream video over WebRTC
 func HTTPAPIServerStreamWebRTC(c *gin.Context) {
 	if !Config.ext(c.PostForm("suuid")) {
 		log.Println("Stream Not Found")
@@ -227,11 +227,11 @@ func HTTPAPIServerStreamWebRTC2(c *gin.Context) {
 			log.Println("Codec Not Supported WebRTC ignore this track", codec.Type())
 			continue
 		}
-		if codec.Type().IsVideo() {
-			response.Tracks = append(response.Tracks, "video")
-		} else {
-			response.Tracks = append(response.Tracks, "audio")
-		}
+		// if codec.Type().IsVideo() {
+		response.Tracks = append(response.Tracks, "video")
+		// } else {
+		// 	response.Tracks = append(response.Tracks, "audio")
+		// }
 	}
 
 	c.JSON(200, response)

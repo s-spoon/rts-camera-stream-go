@@ -56,7 +56,8 @@ function getRemoteSdp() {
   $.post("../receiver/"+ suuid, {
     suuid: suuid,
     data: btoa(pc.localDescription.sdp)
-  }, function(data) {
+  })
+  .done(function(data) {
     try {
       pc.setRemoteDescription(new RTCSessionDescription({
         type: 'answer',
@@ -65,5 +66,8 @@ function getRemoteSdp() {
     } catch (e) {
       console.warn(e);
     }
+  })
+  .fail(function(jqXHR, textStatus, errorThrown) {
+    console.error('Error updating remote description:', errorThrown);
   });
 }

@@ -4,10 +4,17 @@
     "ice_servers": ["stun:stun.l.google.com:19302"]
   },
   "streams": {
-    "MainCam": {
+    "cam1": {
       "on_demand": false,
-      "disable_audio": true,
+      "url": "rtsp://service:WSS4Bosch!@115.178.24.78:101"
+    },
+    "cam2": {
+      "on_demand": false,
       "url": "rtsp://wowzaec2demo.streamlock.net/vod/mp4:BigBuckBunny_115k.mp4"
+    },
+    "cam3": {
+      "on_demand": false,
+      "url": "rtsp://service:WSS4Bosch!@115.178.24.78:103"
     }
   }
 }

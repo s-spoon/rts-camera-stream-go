@@ -2,32 +2,30 @@
 
 RTSP Stream to WebBrowser over WebRTC based on Pion (full native! not using ffmpeg or gstreamer).
 
-**Note:** [RTSPtoWeb](https://github.com/deepch/RTSPtoWeb) is an improved service that provides the same functionality, an improved API, and supports even more protocols. *RTSPtoWeb is recommended over using this service.*
-
+**Note:** [RTSPtoWeb](https://github.com/deepch/RTSPtoWeb) is an improved service that provides the same functionality, an improved API, and supports even more protocols. _RTSPtoWeb is recommended over using this service._
 
 if you need RTSPtoWSMP4f use https://github.com/deepch/RTSPtoWSMP4f
-
 
 ![RTSPtoWebRTC image](doc/demo4.png)
 
 ### Download Source
 
 1. Download source
-   ```bash 
-   $ git clone https://github.com/deepch/RTSPtoWebRTC  
+   ```bash
+   $ git clone https://github.com/deepch/RTSPtoWebRTC
    ```
-3. CD to Directory
+2. CD to Directory
    ```bash
     $ cd RTSPtoWebRTC/
    ```
-4. Test Run
+3. Test Run
    ```bash
     $ GO111MODULE=on go run *.go
    ```
-5. Open Browser
-    ```bash
-    open web browser http://127.0.0.1:8888 work chrome, safari, firefox
-    ```
+4. Open Browser
+   ```bash
+   open web browser http://127.0.0.1:8888 work chrome, safari, firefox
+   ```
 
 ## Configuration
 
@@ -59,13 +57,13 @@ format:
 
 ## Livestreams
 
-Use option ``` "on_demand": false ``` otherwise you will get choppy jerky streams and performance issues when multiple clients connect. 
+Use option `"on_demand": false` otherwise you will get choppy jerky streams and performance issues when multiple clients connect.
 
 ## Limitations
 
 Video Codecs Supported: H264
 
-Audio Codecs Supported: pcm alaw and pcm mulaw 
+Audio Codecs Supported: pcm alaw and pcm mulaw
 
 ## Team
 
